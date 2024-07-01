@@ -17,7 +17,7 @@
 - <strong>Descrição:</strong> Vamos explorar o roteamento no Flask, criar as rotas para a API como listagem de produtos e detalhes do produto. Também vamos a abordar a criação do modelo de usuário e produto.
 
 ##### Aula 3: Integração de Banco de Dados e Autenticação do Usuário
-- <strong>Descrição:<strong> Nesta aula, configuraremos um banco de dados (SQLite) e definiremos modelos de dados para produtos e usuários. Implementaremos a funcionalidade de registro e login do usuário usando o Flask-Login.
+- <strong>Descrição:</strong> Nesta aula, configuraremos um banco de dados (SQLite) e definiremos modelos de dados para produtos e usuários. Implementaremos a funcionalidade de registro e login do usuário usando o Flask-Login.
 
 ##### Aula 4: Construção da API de E-commerce
 - <strong>Descrição:</strong> Vamos começar a construir nossa API de e-commerce implementando rotas para: listar produtos, exibir detlahes de produtos e permitir a adição, remoção e visualização de itens no carrinho de compras. Atualizaremos o modelo de usuário e criaremos o modelo de carrinho.
