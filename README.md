@@ -25,3 +25,8 @@
 ##### Aula 5: Tópicos Avançados e Implementação
 - <strong>Descrição:</strong> Nesta aula final, discutiremos tópicos avançados, como pesquisa e tratamento de erros. Além de prepararemos o projeto para implantação em um ambiente de produção. Abordando tópicos como: configurar um banco de dados de produção, definir variáveis de ambiente e implantar a aplicação na Cloud.
 
+##### Tecnologias usadas:
+- Python
+- Flask
+- Swagger Editor
+
