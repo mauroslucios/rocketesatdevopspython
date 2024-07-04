@@ -33,3 +33,7 @@
 - Flask-Cors==3.0.10
 - Werkzeug==2.3.0
 - Swagger Editor
+
+##### Swagger
+![Captura de tela de 2024-07-03 22-09-21](https://github.com/mauroslucios/rocketeseatdevopspython/assets/671694/6dd72a8e-4d66-49e0-aa3a-77dbc892905c)
+
