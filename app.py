@@ -2,16 +2,24 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from flask_login import UserMixin, login_user, LoginManager, login_required
 
 # Criando instância da classe Flask
 app = Flask(__name__)
+app.config['SECRET_KEY'] = ""
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ecommerce.db'
 
+login_manager = LoginManager()
 db = SQLAlchemy(app)
+login_manager.init_app(app)
+login_manager.login_view = 'login'
 CORS(app)
 
 # Modelagem
-
+class User(db.Model, UserMixin ):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), nullable=False, unique=True)
+    password = db.Column(db.String(80), nullable=True)
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), nullable=False)
@@ -19,7 +27,23 @@ class Product(db.Model):
     description = db.Column(db.Text, nullable=True)
 
 # Rotas - rota raiz(página inicial) e a função que será executada ao requisitar
+# Autenticação
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+@app.route('/login', methods=["POST"])
+def login():
+    data = request.json
+    user = User.query.filter_by(username=data.get("username")).first()
+    if user and data.get("password") == user.password:
+            login_user(user)
+            return jsonify({"message": "Logged in successfully"})
+    return jsonify({"message": "Unauthorized. Invalid credentials"}), 401
+
+
 @app.route('/api/products/add', methods=["POST"])
+@login_required
 def add_product():
     data = request.json
     if 'name' in data and 'price' in data:
@@ -30,6 +54,7 @@ def add_product():
     return jsonify({"message":"Invalid product data."}), 400
 
 @app.route('/api/products/delete/<int:product_id>', methods=["DELETE"])
+@login_required
 def delete_product(product_id):
     product = Product.query.get(product_id)
     if product:
@@ -51,6 +76,7 @@ def get_product_details(product_id):
     return jsonify({"message":"Product not found"}), 404
 
 @app.route('/api/products/update/<int:product_id>', methods=["PUT"])
+@login_required
 def update_product(product_id):
     product = Product.query.get(product_id)
     if not product:
