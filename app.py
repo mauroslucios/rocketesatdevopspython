@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_login import UserMixin, login_user, LoginManager, login_required
 
+
 # Criando instância da classe Flask
 app = Flask(__name__)
 app.config['SECRET_KEY'] = ""
