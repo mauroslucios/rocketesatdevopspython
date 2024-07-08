@@ -147,6 +147,8 @@ def remove_from_cart(product_id):
         return jsonify({'message':'Item removed from the cart successfully.'})
     return jsonify({'message':'Failed to remove intem from the cart.'})
 
+
+# Aqui devemos buscar todos os produtos de uma vez e não fazer iteração repedtidas por questão de performance
 @app.route('/api/cart', methods=['GET'])
 @login_required
 def view_cart():
@@ -164,5 +166,17 @@ def view_cart():
             "product_price" : product.price
         })
     return jsonify(cart_content)
+
+@app.route('/api/cart/checkout', methods=["POST"])
+@login_required
+def checkout():
+    user = User.query.get(int(current_user.id))
+    cart_items = user.cart
+    for cart_item in cart_items:
+        db.session.delete(cart_item)
+    db.session.commit()
+    return jsonify({'message':'Checkout successful. Cart has been cleared.'})
+
+
 if __name__ == "__main__":
     app.run(debug=True)
