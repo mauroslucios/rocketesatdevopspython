@@ -2,7 +2,7 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user
+from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 
 
 # Criando instância da classe Flask
@@ -21,11 +21,19 @@ class User(db.Model, UserMixin ):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), nullable=False, unique=True)
     password = db.Column(db.String(80), nullable=True)
+    cart = db.relationship('CartItem', backref='user', lazy=True)
+
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), nullable=False)
     price = db.Column(db.Float, nullable=False)
     description = db.Column(db.Text, nullable=True)
+
+class CartItem(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
+
 
 # Rotas - rota raiz(página inicial) e a função que será executada ao requisitar
 # Autenticação
@@ -88,17 +96,13 @@ def update_product(product_id):
     product = Product.query.get(product_id)
     if not product:
         return jsonify({"message":"Product not found."}), 404
-    
     data = request.json
     if 'name' in data:
         product.name = data['name']
-
     if 'price' in data:
         product.price = data['price']
-    
     if 'description' in data:
         product.description = data['description']
-
     db.session.commit()
     return jsonify({"message":"Product updated successfully."})
     
@@ -117,9 +121,23 @@ def get_products():
     
     return jsonify(product_list)
 
-@app.route('/')
-def hello_world():
-    return 'API Produtos E-commerce'
+# Checkout
+@app.route ('/api/cart/add/<int:product_id>', methods=['POST'])
+@login_required
+def add_to_cart(product_id):
+    # Usuário 
+    user = User.query.get(int(current_user.id))
+    # Produto
+    product = Product.query.get(product_id)
+
+    if user and product:
+        cart_item = CartItem(user_id=user.id, product_id=product.id)
+        db.session.add(cart_item)
+        db.session.commit()
+        return jsonify({'message':'Item added to the cart sucessfully.'})
+    return jsonify({'message':'Failed to add item to the cart.'}), 400
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
