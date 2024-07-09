@@ -9,7 +9,7 @@ bin-debug/
 bin-release/
 .actionScriptProperties
 .flexConfig.xml
-
+.env
 # only for a non-library project
 .flexProperties
 
