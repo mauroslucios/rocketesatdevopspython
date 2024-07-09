@@ -34,6 +34,7 @@
 - Werkzeug==2.3.0
 - Swagger Editor
 - Elastic Beanstalk
+- Pyenv
 
 ##### Deploying a Flask application to Elastic Beanstalk
 - <a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create-deploy-python-flask.html" target="_blank">Documentação AWS - Deploy Elastic Beanstalk</a>
