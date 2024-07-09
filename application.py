@@ -7,8 +7,9 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, log
 
 # Criando instância da classe Flask
 application = Flask(__name__)
-application.config['SECRET_KEY'] = "minha_chave_difcil_123"
-application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ecommerce.db'
+application.config.from_pyfile('settings.py')
+#application.config['SECRET_KEY'] = ""
+#application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ecommerce.db'
 
 login_manager = LoginManager()
 db = SQLAlchemy(application)
