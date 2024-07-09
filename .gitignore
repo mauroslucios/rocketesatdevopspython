@@ -3,6 +3,7 @@
 
 ### FlashBuilder ###
 # Build and Release Folders
+awscli-bundle/
 bin/
 bin-debug/
 bin-release/
